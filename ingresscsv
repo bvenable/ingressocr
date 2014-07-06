@@ -1,0 +1,15 @@
+#!/bin/sh
+DATA=$(sed 's/,//g' $1 \
+| cut -f1 -d/ \
+| awk '{if ($2 =="AP") print $2 " " $1; else print $ALL}' \
+| sed 's/ \([0-9]\)/,\1/' \
+| sed 's/ XM$//' \
+| sed 's/ MUs$//' \
+| sed 's/ km$//' \
+| sed 's/ days$//' \
+| sed 's/ km-days$//' \
+| sed 's/ MU-days$//' \
+| sed 's/days$//' \
+| sed 's/Username /Username,/')
+echo "$DATA" | cut -f1 -d, | paste -d, -s
+echo "$DATA" | cut -f2 -d, | paste -d, -s

@@ -1,0 +1,34 @@
+#!/bin/sh
+TEMPFILE=$(tempfile)
+tesseract -psm 4 $1 stdout > $TEMPFILE 2>/dev/null
+INGRESSUSER=$(grep -A1 AGENT $TEMPFILE | tail -1 | awk '{print $2}')
+echo "Username $INGRESSUSER"
+egrep " AP" $TEMPFILE | cut -f2- -d' '
+egrep "^Unique Portals Visited|\
+^Portals Discovered|\
+^XM Collected|\
+^Hacks|\
+^Resonators Deployed|\
+^Links Created|\
+^Control Fields Created|\
+^Mind Units Captured|\
+^Longest Link Ever Created|\
+^Largest Control Field|\
+^XM Recharged|\
+^Portals Captured|\
+^Unique Portals Captured|\
+^Resonators Destroyed|\
+^Portals Neutralized|\
+^Enemy Links Destroyed|\
+^Enemy Control Fields Destroyed|\
+^Distance Walked|\
+^Max Time Portal Held|\
+^Max Time Link Maintained|\
+^Max Link Length x Days|\
+^Max Time Field Held|\
+^Max Time Field Held|\
+^Largest Field MUs x Days" \
+$TEMPFILE \
+| sed 's/\\\_\/ //' \
+| sed 's/ <2//'
+rm -f $TEMPFILE
