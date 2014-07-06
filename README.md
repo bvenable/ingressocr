@@ -30,7 +30,7 @@ This will output a human-readable text version of your stats:
 ingressocr <screenshot.png>
 ```
 
-To turn it into a CSV (for spreadsheets) and put that into file:
+To turn it into a CSV (for spreadsheets) and put that into a file:
 
 ```
 ingressocr <screenshot.png> | ingresscsv > myprofile.csv
