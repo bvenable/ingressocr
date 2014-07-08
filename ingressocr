@@ -1,9 +1,10 @@
 #!/bin/sh
+INGRESSPROFILE=$1
 TEMPFILE=$(tempfile)
-tesseract -psm 4 $1 stdout > $TEMPFILE 2>/dev/null
-INGRESSUSER=$(grep -A1 AGENT $TEMPFILE | tail -1 | awk '{print $2}')
+tesseract -psm 4 $INGRESSPROFILE stdout > $TEMPFILE 2>/dev/null
+INGRESSUSER=$(grep -A2 AGENT $TEMPFILE | egrep "[a-z]" | tail -1 | sed -n 's/^\([A-Za-z]*\).*$/\1/p')
 echo "Username $INGRESSUSER"
-egrep " AP" $TEMPFILE | cut -f2- -d' '
+fgrep " AP" $TEMPFILE | sed -n 's/\([0-9].* AP\).* AP$/\1/p'
 egrep "^Unique Portals Visited|\
 ^Portals Discovered|\
 ^XM Collected|\
