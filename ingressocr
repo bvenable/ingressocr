@@ -1,10 +1,16 @@
 #!/bin/sh
+TESSERACTVERSION=$(tesseract -v 2>&1| cut -f2 -d' ')
 INGRESSPROFILE=$1
 TEMPFILE=$(tempfile)
-tesseract -psm 4 $INGRESSPROFILE stdout > $TEMPFILE 2>/dev/null
-INGRESSUSER=$(grep -A2 AGENT $TEMPFILE | egrep "[a-z]" | tail -1 | sed -n 's/^\([A-Za-z]*\).*$/\1/p')
+if [ "${TESSERACTVERSION}" = "3.03" ]; then
+	tesseract -psm 4 $INGRESSPROFILE stdout > $TEMPFILE 2>/dev/null
+else
+	tesseract -psm 6 $INGRESSPROFILE $TEMPFILE >/dev/null 2>&1
+	mv -f $TEMPFILE.txt $TEMPFILE
+fi
+INGRESSUSER=$(grep -A2 AGENT $TEMPFILE | fgrep -v "LVL" | egrep "[a-z]" | tail -1 | sed -r "s/.*([A-Z][a-z]+).*/\1/g")
 echo "Username $INGRESSUSER"
-fgrep " AP" $TEMPFILE | sed -n 's/\([0-9].* AP\).* AP$/\1/p'
+fgrep " AP" $TEMPFILE | sed 's/,//g' | sed -r "s/^.* ([0-9]+* AP) .*$/\1/g"
 egrep "^Unique Portals Visited|\
 ^Portals Discovered|\
 ^XM Collected|\
