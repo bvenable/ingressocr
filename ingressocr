@@ -8,7 +8,7 @@ else
 	tesseract -psm 6 $INGRESSPROFILE $TEMPFILE >/dev/null 2>&1
 	mv -f $TEMPFILE.txt $TEMPFILE
 fi
-INGRESSUSER=$(grep -A2 AGENT $TEMPFILE | fgrep -v "LVL" | egrep "[a-z]" | tail -1 | sed -r "s/.*([A-Z][a-z]+).*/\1/g")
+INGRESSUSER=$(grep -A2 AGENT $TEMPFILE | fgrep -v "LVL" | egrep "[a-z]" | tail -1 | sed 's/[^a-zA-Z]//g')
 echo "Username $INGRESSUSER"
 fgrep " AP" $TEMPFILE | sed 's/,//g' | sed -r "s/^.* ([0-9]+* AP) .*$/\1/g"
 egrep "^Unique Portals Visited|\
