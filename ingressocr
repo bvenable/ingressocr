@@ -1,16 +1,27 @@
 #!/bin/sh
+TESSERACT=$(which tesseract)
+if [ ! -x "${TESSERACT}" ]; then
+	echo "no tesseract found, please install it"
+	exit 1
+fi
+CONVERT=$(which convert)
 TESSERACTVERSION=$(tesseract -v 2>&1| cut -f2 -d' ')
 INGRESSPROFILE=$1
-TEMPFILE=$(mktemp)
-if [ "${TESSERACTVERSION}" = "3.03" ]; then
-	tesseract -psm 4 $INGRESSPROFILE stdout > $TEMPFILE 2>/dev/null
-else
-	tesseract -psm 6 $INGRESSPROFILE $TEMPFILE >/dev/null 2>&1
-	mv -f $TEMPFILE.txt $TEMPFILE
+OCROUT=$(mktemp)
+CONVERTOUT=$(mktemp)
+if [ -x "${CONVERT}" ]; then
+	convert $INGRESSPROFILE -colorspace Gray $CONVERTOUT
+	INGRESSPROFILE=$CONVERTOUT
 fi
-INGRESSUSER=$(grep -A2 AGENT $TEMPFILE | fgrep -v "LVL" | egrep "[a-z]" | tail -1 | sed 's/[^a-zA-Z]//g')
+if [ "${TESSERACTVERSION}" = "3.03" ]; then
+	tesseract -psm 4 $INGRESSPROFILE stdout > $OCROUT 2>/dev/null
+else
+	tesseract -psm 6 $INGRESSPROFILE $OCROUT >/dev/null 2>&1
+	mv -f $OCROUT.txt $OCROUT
+fi
+INGRESSUSER=$(grep -A2 AGENT $OCROUT | fgrep -v "LVL" | egrep "[a-z]" | tail -1 | sed 's/[^a-zA-Z]//g')
 echo "Username $INGRESSUSER"
-fgrep " AP" $TEMPFILE | sed 's/,//g' | sed -r "s/^.* ([0-9]+* AP) .*$/\1/g"
+fgrep " AP" $OCROUT | sed 's/,//g' | sed -r "s/^.* ([0-9]+* AP) .*$/\1/g"
 egrep "^Unique Portals Visited|\
 ^Portals Discovered|\
 ^XM Collected|\
@@ -35,7 +46,8 @@ egrep "^Unique Portals Visited|\
 ^Max Time Field Held|\
 ^Max Time Field Held|\
 ^Largest Field MUs x Days" \
-$TEMPFILE \
+$OCROUT \
 | sed 's/\\\_\/ //' \
 | sed 's/ <2//'
-rm -f $TEMPFILE
+rm -f $OCROUT
+rm -f $CONVERTOUT
