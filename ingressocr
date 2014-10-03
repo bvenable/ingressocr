@@ -1,7 +1,7 @@
 #!/bin/sh
 TESSERACTVERSION=$(tesseract -v 2>&1| cut -f2 -d' ')
 INGRESSPROFILE=$1
-TEMPFILE=$(tempfile)
+TEMPFILE=$(mktemp)
 if [ "${TESSERACTVERSION}" = "3.03" ]; then
 	tesseract -psm 4 $INGRESSPROFILE stdout > $TEMPFILE 2>/dev/null
 else
