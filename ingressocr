@@ -25,7 +25,7 @@ fgrep " AP" $OCROUT | sed 's/,//g' | sed -r "s/^.* ([0-9]+* AP) .*$/\1/g"
 egrep "^Unique Portals Visited|\
 ^Portals Discovered|\
 ^XM Collected|\
-^Hacks|\
+^Distance Walked|\
 ^Resonators Deployed|\
 ^Links Created|\
 ^Control Fields Created|\
@@ -35,17 +35,19 @@ egrep "^Unique Portals Visited|\
 ^XM Recharged|\
 ^Portals Captured|\
 ^Unique Portals Captured|\
+^Mods Deployed|\
 ^Resonators Destroyed|\
 ^Portals Neutralized|\
 ^Enemy Links Destroyed|\
 ^Enemy Control Fields Destroyed|\
-^Distance Walked|\
 ^Max Time Portal Held|\
 ^Max Time Link Maintained|\
 ^Max Link Length x Days|\
 ^Max Time Field Held|\
-^Max Time Field Held|\
-^Largest Field MUs x Days" \
+^Largest Field MUs x Days|\
+^Unique Missions Completed|\
+^Hacks|\
+^Glyph Hack Points" \
 $OCROUT \
 | sed 's/\\\_\/ //' \
 | sed 's/ <2//'
