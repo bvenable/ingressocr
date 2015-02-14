@@ -50,6 +50,7 @@ egrep "^Unique Portals Visited|\
 ^Glyph Hack Points" \
 $OCROUT \
 | sed 's/\\\_\/ //' \
-| sed 's/ <2//'
-#rm -f $OCROUT
+| sed 's/ <2//' \
+| sed 's/—/-/g'
+rm -f $OCROUT
 rm -f $CONVERTOUT
