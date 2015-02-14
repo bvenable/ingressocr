@@ -19,13 +19,13 @@ else
 	tesseract -psm 6 $INGRESSPROFILE $OCROUT >/dev/null 2>&1
 	mv -f $OCROUT.txt $OCROUT
 fi
-INGRESSUSER=$(grep -A2 AGENT $OCROUT | fgrep -v "LVL" | egrep "[a-z]" | tail -1 | perl -pe 's|(.*?\s).*|\1|')
+INGRESSUSER=$(grep -A2 AGENT $OCROUT | fgrep -v "LVL" | egrep "[a-z]" | tail -1 | perl -pe 's|.* (\w+) .*|\1|')
 echo "Username $INGRESSUSER"
-fgrep " AP" $OCROUT | sed 's/,//g' | sed -r "s/^.* ([0-9]+* AP) .*$/\1/g"
+fgrep " AP" $OCROUT  | sed 's/,//g' | perl -pe 's|.* (\d+ AP)|\1|'
 egrep "^Unique Portals Visited|\
 ^Portals Discovered|\
 ^XM Collected|\
-^Hacks|\
+^Distance Walked|\
 ^Resonators Deployed|\
 ^Links Created|\
 ^Control Fields Created|\
@@ -35,19 +35,21 @@ egrep "^Unique Portals Visited|\
 ^XM Recharged|\
 ^Portals Captured|\
 ^Unique Portals Captured|\
+^Mods Deployed|\
 ^Resonators Destroyed|\
 ^Portals Neutralized|\
 ^Enemy Links Destroyed|\
 ^Enemy Control Fields Destroyed|\
-^Distance Walked|\
 ^Max Time Portal Held|\
 ^Max Time Link Maintained|\
 ^Max Link Length x Days|\
 ^Max Time Field Held|\
-^Max Time Field Held|\
-^Largest Field MUs x Days" \
+^Largest Field MUs x Days|\
+^Unique Missions Completed|\
+^Hacks|\
+^Glyph Hack Points" \
 $OCROUT \
 | sed 's/\\\_\/ //' \
 | sed 's/ <2//'
-rm -f $OCROUT
+#rm -f $OCROUT
 rm -f $CONVERTOUT
