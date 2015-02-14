@@ -19,9 +19,9 @@ else
 	tesseract -psm 6 $INGRESSPROFILE $OCROUT >/dev/null 2>&1
 	mv -f $OCROUT.txt $OCROUT
 fi
-INGRESSUSER=$(grep -A2 AGENT $OCROUT | fgrep -v "LVL" | egrep "[a-z]" | tail -1 | perl -pe 's|(.*?\s).*|\1|')
+INGRESSUSER=$(grep -A2 AGENT $OCROUT | fgrep -v "LVL" | egrep "[a-z]" | tail -1 | perl -pe 's|.* (\w+) .*|\1|')
 echo "Username $INGRESSUSER"
-fgrep " AP" $OCROUT | sed 's/,//g' | sed -r "s/^.* ([0-9]+* AP) .*$/\1/g"
+fgrep " AP" $OCROUT  | sed 's/,//g' | perl -pe 's|.* (\d+ AP)|\1|'
 egrep "^Unique Portals Visited|\
 ^Portals Discovered|\
 ^XM Collected|\
@@ -51,5 +51,5 @@ egrep "^Unique Portals Visited|\
 $OCROUT \
 | sed 's/\\\_\/ //' \
 | sed 's/ <2//'
-rm -f $OCROUT
+#rm -f $OCROUT
 rm -f $CONVERTOUT
