@@ -47,7 +47,8 @@ egrep "^Unique Portals Visited|\
 ^Largest Field MUs x Days|\
 ^Unique Missions Completed|\
 ^Hacks|\
-^Glyph Hack Points" \
+^Glyph Hack Points|\
+^Consecutive Days Hacking" \
 $OCROUT \
 | sed 's/\\\_\/ //' \
 | sed 's/ <2//' \
