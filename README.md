@@ -22,7 +22,7 @@ sudo apt-get install tesseract-ocr tesseract-ocr-eng
 
 Note: you may need to [add the Universe repository](https://help.ubuntu.com/community/Repositories/CommandLine#Adding_the_Universe_and_Multiverse_Repositories) first.
 
-Make sure you have [Ingress](https://play.google.com/store/apps/details?id=com.nianticproject.ingress) 1.70.0 installed. Go to your Agent profile and use the share button in the top right. Save the file somewhere and copy it to your Linux box where you've put the ingressocr and ingresscsv scripts.  
+Make sure you have [Ingress](https://play.google.com/store/apps/details?id=com.nianticproject.ingress) 1.71.1 installed. Go to your Agent profile and use the share button in the top right. Save the file somewhere and copy it to your Linux box where you've put the ingressocr and ingresscsv scripts.  
 
 This will output a human-readable text version of your stats:
 
