@@ -48,7 +48,8 @@ egrep "^Unique Portals Visited|\
 ^Unique Missions Completed|\
 ^Hacks|\
 ^Glyph Hack Points|\
-^Consecutive Days Hacking" \
+^Longest Hacking Streak|\
+^Agents Successfully Recruited" \
 $OCROUT \
 | sed 's/\\\_\/ //' \
 | sed 's/ <2//' \
